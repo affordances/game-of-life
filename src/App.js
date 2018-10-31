@@ -9,10 +9,10 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay,
          faStop,
-         faForward,
+         faStepForward,
          faTimes } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlay, faStop, faForward, faTimes);
+library.add(faPlay, faStop, faStepForward, faTimes);
 
 const oneGridSide = 15;
 
@@ -194,7 +194,7 @@ class App extends React.Component {
               <div className="controls-bottom-row">
                 <div className="control-wrapper"
                      onClick={this.advanceOneIteration}>
-                  <FontAwesomeIcon icon="forward" size="2x" />
+                  <FontAwesomeIcon icon="step-forward" size="2x" />
                 </div>
                 <div className="control-wrapper"
                      onClick={this.resetGrid}>
