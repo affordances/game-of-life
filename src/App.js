@@ -153,7 +153,11 @@ class App extends React.Component {
     return (
       <div className="container">
         <header>
-          <h1>{"Conway's Game of Life"}</h1>
+          <h1>{"CGOL"}</h1>
+          <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+             target="_blank" rel="noopener noreferrer">
+            ?
+          </a>
         </header>
         <div className="grid-controls-presets-container">
           <div className="grid-slider-iteration-count-container">
@@ -234,12 +238,6 @@ class App extends React.Component {
             </div>
             <div className="iteration-count">{this.state.iterationCount}</div>
           </div>
-        </div>
-        <div className="link-wrapper">
-          <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
-             target="_blank" rel="noopener noreferrer">
-            more info
-          </a>
         </div>
       </div>
     );
