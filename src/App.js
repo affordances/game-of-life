@@ -7,13 +7,12 @@ import './App.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWikipediaW } from '@fortawesome/free-brands-svg-icons';
 import { faPlay,
          faStop,
          faForward,
          faTimes } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlay, faStop, faForward, faTimes, faWikipediaW);
+library.add(faPlay, faStop, faForward, faTimes);
 
 const oneGridSide = 15;
 
@@ -239,7 +238,7 @@ class App extends React.Component {
         <div className="link-wrapper">
           <a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
              target="_blank" rel="noopener noreferrer">
-             <FontAwesomeIcon icon="wikipedia" size="2x" />
+            more info
           </a>
         </div>
       </div>
