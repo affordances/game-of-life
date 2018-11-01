@@ -21,6 +21,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       grid: [],
+      isGridEmpty: true,
       selectMode: false,
       isRunning: false,
       iterationCount: 0,
@@ -57,7 +58,7 @@ class App extends React.Component {
 
     this.advanceOneIteration = e => {
       e.preventDefault();
-      if (this.state.isRunning || this.state.iterationCount === 0) { return; }
+      if (this.state.isRunning || this.state.isGridEmpty) { return; }
       this.createNextIteration();
     };
 
@@ -123,15 +124,17 @@ class App extends React.Component {
     };
 
     this.toggleCell = (rowIndex, cellIndex) => {
+      const stateOfGrid = this.state.isGridEmpty ? false : true;
       let grid = this.state.grid;
       grid[rowIndex][cellIndex] = !grid[rowIndex][cellIndex];
-      this.setState({ grid: grid });
+      this.setState({ grid: grid, isGridEmpty: stateOfGrid });
     };
 
     this.resetGrid = e => {
       e.preventDefault();
       clearTimeout(this.timeout);
       this.setState({ grid: this.makeEmptyGrid(),
+                      isGridEmpty: true,
                       isRunning: false,
                       iterationCount: 0,
                       sliderValue: -550,
@@ -154,6 +157,7 @@ class App extends React.Component {
         grid[position[0]][position[1]] = true;
       });
       this.setState({ grid: grid,
+                      isGridEmpty: false,
                       isRunning: false,
                       iterationCount: 0 });
     };
