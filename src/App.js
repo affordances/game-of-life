@@ -24,8 +24,8 @@ class App extends React.Component {
       selectMode: false,
       isRunning: false,
       iterationCount: 0,
-      sliderValue: -550,
-      refreshRate: 550
+      sliderValue: -540,
+      refreshRate: 540
     };
 
     this.makeEmptyGrid = () => {
@@ -145,8 +145,8 @@ class App extends React.Component {
       this.setState({ grid: this.makeEmptyGrid(),
                       isRunning: false,
                       iterationCount: 0,
-                      sliderValue: -550,
-                      refreshRate: 550 });
+                      sliderValue: -540,
+                      refreshRate: 540 });
     };
 
     this.onSliderChange = (sliderValue) => {
@@ -172,7 +172,6 @@ class App extends React.Component {
 
   componentDidMount() {
     window.addEventListener("mouseup", () => {
-      console.log("poop");
       this.setState({ selectMode: false });
     });
     this.setState({ grid: this.makeEmptyGrid() });
