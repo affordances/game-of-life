@@ -21,7 +21,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       grid: [],
-      isGridEmpty: true,
       selectMode: false,
       isRunning: false,
       iterationCount: 0,
@@ -35,14 +34,25 @@ class App extends React.Component {
       );
     };
 
+    this.isGridEmpty = () => {
+      for (let i = 0; i < this.state.grid.length; i++) {
+        for (let j = 0; j < this.state.grid[i].length; j++) {
+          if (this.state.grid[i][j] === true) {
+            return false;
+          }
+        }
+      }
+      return true;
+    };
+
     this.startSimulation = e => {
       e.preventDefault();
-      if (this.state.isRunning) { return; }
+      if (this.state.isRunning || this.isGridEmpty()) { return; }
       this.setState({ isRunning: true },
         () => this.simulationLoop());
     };
 
-    this.stopSimulation = e => {
+    this.pauseSimulation = e => {
       e.preventDefault();
       if (!this.state.isRunning) { return; }
       clearTimeout(this.timeout);
@@ -58,7 +68,7 @@ class App extends React.Component {
 
     this.advanceOneIteration = e => {
       e.preventDefault();
-      if (this.state.isRunning || this.state.isGridEmpty) { return; }
+      if (this.state.isRunning || this.isGridEmpty()) { return; }
       this.createNextIteration();
     };
 
@@ -124,17 +134,15 @@ class App extends React.Component {
     };
 
     this.toggleCell = (rowIndex, cellIndex) => {
-      const stateOfGrid = this.state.isGridEmpty ? false : true;
       let grid = this.state.grid;
       grid[rowIndex][cellIndex] = !grid[rowIndex][cellIndex];
-      this.setState({ grid: grid, isGridEmpty: stateOfGrid });
+      this.setState({ grid: grid });
     };
 
     this.resetGrid = e => {
       e.preventDefault();
       clearTimeout(this.timeout);
       this.setState({ grid: this.makeEmptyGrid(),
-                      isGridEmpty: true,
                       isRunning: false,
                       iterationCount: 0,
                       sliderValue: -550,
@@ -157,7 +165,6 @@ class App extends React.Component {
         grid[position[0]][position[1]] = true;
       });
       this.setState({ grid: grid,
-                      isGridEmpty: false,
                       isRunning: false,
                       iterationCount: 0 });
     };
@@ -208,7 +215,7 @@ class App extends React.Component {
                   <FontAwesomeIcon icon="play" size="2x" />
                 </div>
                 <div className="control-wrapper"
-                     onClick={this.stopSimulation}>
+                     onClick={this.pauseSimulation}>
                   <FontAwesomeIcon icon="pause" size="2x" />
                 </div>
                 <div className="preset-wrapper"
