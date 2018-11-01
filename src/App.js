@@ -8,11 +8,11 @@ import './App.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay,
-         faStop,
+         faPause,
          faStepForward,
          faTimes } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faPlay, faStop, faStepForward, faTimes);
+library.add(faPlay, faPause, faStepForward, faTimes);
 
 const oneGridSide = 15;
 
@@ -21,6 +21,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       grid: [],
+      selectMode: false,
       isRunning: false,
       iterationCount: 0,
       sliderValue: -550,
@@ -108,6 +109,19 @@ class App extends React.Component {
       return count;
     };
 
+    this.mouseDownHandler = (rowIndex, cellIndex) => () => {
+      if (!this.state.isRunning) {
+        this.toggleCell(rowIndex, cellIndex);
+        this.setState({ selectMode: true });
+      }
+    };
+
+    this.mouseEnterHandler = (rowIndex, cellIndex) => () => {
+      if (!this.state.isRunning && this.state.selectMode) {
+        this.toggleCell(rowIndex, cellIndex);
+      }
+    };
+
     this.toggleCell = (rowIndex, cellIndex) => {
       let grid = this.state.grid;
       grid[rowIndex][cellIndex] = !grid[rowIndex][cellIndex];
@@ -132,7 +146,7 @@ class App extends React.Component {
       this.setState({ refreshRate: value * -1 });
     };
 
-    this.loadPreset = (preset) => {
+    this.loadPreset = (preset) => () => {
       clearTimeout(this.timeout);
       let grid = this.makeEmptyGrid();
       const presetToLoad = presets[preset];
@@ -146,7 +160,15 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    window.addEventListener("mouseup", () => {
+      console.log("poop");
+      this.setState({ selectMode: false });
+    });
     this.setState({ grid: this.makeEmptyGrid() });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("mouseup");
   }
 
   render() {
@@ -167,9 +189,8 @@ class App extends React.Component {
                             className="row">{row.map((cell, cellIndex) => {
                   return <div key={cellIndex}
                               className={cell ? "living-cell" : "dead-cell"}
-                              onClick={!this.state.isRunning ?
-                                       () => this.toggleCell(rowIndex, cellIndex) :
-                                       null}
+                              onMouseDown={this.mouseDownHandler(rowIndex, cellIndex)}
+                              onMouseEnter={this.mouseEnterHandler(rowIndex, cellIndex)}
                          >{cell}</div>;
                 })}</div>;
               })}
@@ -184,14 +205,14 @@ class App extends React.Component {
                 </div>
                 <div className="control-wrapper"
                      onClick={this.stopSimulation}>
-                  <FontAwesomeIcon icon="stop" size="2x" />
+                  <FontAwesomeIcon icon="pause" size="2x" />
                 </div>
                 <div className="preset-wrapper"
-                     onClick={() => this.loadPreset("small exploder")}>
+                     onClick={this.loadPreset("small exploder")}>
                   1
                 </div>
                 <div className="preset-wrapper"
-                     onClick={() => this.loadPreset("exploder")}>
+                     onClick={this.loadPreset("exploder")}>
                   2
                 </div>
               </div>
@@ -205,11 +226,11 @@ class App extends React.Component {
                   <FontAwesomeIcon icon="times" size="2x" />
                 </div>
                 <div className="preset-wrapper"
-                     onClick={() => this.loadPreset("nine cell row")}>
+                     onClick={this.loadPreset("nine cell row")}>
                   3
                 </div>
                 <div className="preset-wrapper"
-                     onClick={() => this.loadPreset("tumbler")}>
+                     onClick={this.loadPreset("tumbler")}>
                   4
                 </div>
               </div>

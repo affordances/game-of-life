@@ -115,6 +115,7 @@ button {
   align-items: center;
   font-size: 50px;
   border: 1px solid gray;
+  user-select: none;
 }
 
 .row {
