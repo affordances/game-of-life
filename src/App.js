@@ -45,18 +45,19 @@ class App extends React.Component {
       return true;
     };
 
-    this.startSimulation = e => {
+    this.toggleSimulation = e => {
       e.preventDefault();
-      if (this.state.isRunning || this.isGridEmpty()) { return; }
+      if (this.isGridEmpty()) { return; }
+      if (this.state.isRunning) {
+        clearTimeout(this.timeout);
+        this.setState({ isRunning: false });
+        return;
+      }
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
       this.setState({ isRunning: true },
         () => this.simulationLoop());
-    };
-
-    this.pauseSimulation = e => {
-      e.preventDefault();
-      if (!this.state.isRunning) { return; }
-      clearTimeout(this.timeout);
-      this.setState({ isRunning: false });
     };
 
     this.simulationLoop = () => {
@@ -209,13 +210,11 @@ class App extends React.Component {
           <div className="panel-container">
             <div className="controls-container">
               <div className="controls-top-row">
-                <div className="control-wrapper"
-                     onClick={this.startSimulation}>
-                  <FontAwesomeIcon icon="play" size="2x" />
-                </div>
-                <div className="control-wrapper"
-                     onClick={this.pauseSimulation}>
-                  <FontAwesomeIcon icon="pause" size="2x" />
+                <div className="play-pause-wrapper"
+                     onClick={this.toggleSimulation}>
+                       {this.state.isRunning ?
+                          <FontAwesomeIcon icon="pause" size="2x" /> :
+                          <FontAwesomeIcon icon="play" size="2x" />}
                 </div>
                 <div className="preset-wrapper"
                      onClick={this.loadPreset("small exploder")}>

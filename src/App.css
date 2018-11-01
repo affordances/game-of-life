@@ -96,6 +96,16 @@ button {
   justify-content: space-between;
 }
 
+.play-pause-wrapper {
+  width: 242px;
+  height: 120px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gray;
+}
+
 .control-wrapper {
   width: 120px;
   height: 120px;
