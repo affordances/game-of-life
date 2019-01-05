@@ -1,1 +1,3 @@
-[Trello](https://trello.com/b/ysGkblxl/gameoflife-gabriel-duquette)
+# Conway's Game of Life
+
+A cellular automata visualizer.
